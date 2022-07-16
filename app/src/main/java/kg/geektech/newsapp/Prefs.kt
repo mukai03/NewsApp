@@ -2,7 +2,6 @@ package kg.geektech.newsapp
 
 import android.content.Context
 import android.text.Editable
-import java.security.AccessControlContext
 
 class Prefs(context: Context) {
 
@@ -16,7 +15,11 @@ class Prefs(context: Context) {
         return preferences.getBoolean("isShown", false)
     }
 
-    fun afterTextChanged(p0: Editable?){
-        preferences.edit().putString("name", p0.toString()).apply()
+    fun saveNames(toString: String) {
+        preferences.edit().putString("", "").apply()
+    }
+
+    fun saveNames(toString: String, name: String) {
+        preferences.edit().putString("", name).apply()
     }
 }

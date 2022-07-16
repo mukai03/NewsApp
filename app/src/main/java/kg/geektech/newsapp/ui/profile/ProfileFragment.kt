@@ -1,7 +1,6 @@
 package kg.geektech.newsapp.ui.profile
 
-import android.content.Context
-import android.net.Uri
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,21 +9,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
-import kg.geektech.newsapp.R
-import kg.geektech.newsapp.databinding.FragmentHomeBinding
-import kg.geektech.newsapp.databinding.FragmentNotificationsBinding
+import androidx.appcompat.app.AppCompatActivity
+import kg.geektech.newsapp.Prefs
 import kg.geektech.newsapp.databinding.FragmentProfileBinding
-import kg.geektech.newsapp.ui.notifications.NotificationsViewModel
 
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
+    private lateinit var launcher: ActivityResultLauncher<Intent>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,19 +31,58 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.imageView.setOnClickListener {
-            getContent.launch("image/*")
+//        binding.imageView.setOnClickListener {
+//            getContent.launch("image/*")
+//       }
+        initLauncher()
+        binding.imageView.setOnClickListener{
+            val intent = Intent()
+            intent.action = Intent.ACTION_PICK
+            intent.type = "image/*"
+            launcher.launch(intent)
         }
-        textWatcher()
+        saveName()
+    }
+    private fun initLauncher() {
+        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == AppCompatActivity.RESULT_OK) {
+                val image = it.data?.data
+                if (image != null) {
+                    binding.imageView.setImageURI(image)
+                }
+            }
+        }
     }
 
-    private val getContent =
+    private fun saveName() {
+        val pref = Prefs(requireContext())
+        val name = binding.editText.text.toString()
+        binding.saveButton.setOnClickListener {
+            Prefs(requireContext()).saveNames("name", name)
+            Log.e("Tag", "name:${pref.saveNames("")}")
+        }
+        /*binding.editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0 : CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val text = binding.editText.text.toString()
+                Prefs(requireContext()).saveNames(text)
+            }
+        })*/
+    }
+
+/*    private val getContent =
         registerForActivityResult(ActivityResultContracts.GetContent()){ uri : Uri? ->
             Glide.with(binding.imageView).load(uri).centerCrop().into(binding.imageView)
-    }
+    }*/
 
-    private fun textWatcher() {
-        val pref = requireContext().getSharedPreferences("name", Context.MODE_PRIVATE)
+   /* private fun textWatcher() {
+        val pref = Prefs(requireContext())
         val listener = object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -59,12 +92,14 @@ class ProfileFragment : Fragment() {
             }
 
             override fun afterTextChanged(p0: Editable?) {
-                pref.edit().putString("name", p0.toString()).apply()
-                Log.e("Tag", "textWatcher:${pref.getString("name", "defaultName")}")
-                binding.textView.text = pref.getString("name", "defaultName")
+                pref.textWatcher(p0)
+                Log.e("Tag", "textWatcher:${pref.getTextWatcher()}")
+                binding.textView.text = pref.getTextWatcher()
             }
 
         }
         binding.editText.addTextChangedListener(listener)
-    }
+    }*/
+
 }
+

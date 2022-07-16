@@ -3,6 +3,7 @@ package kg.geektech.newsapp.ui.board
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kg.geektech.newsapp.R
@@ -12,21 +13,22 @@ import kg.geektech.newsapp.models.PagerModel
 class BoardAdapter(private val onClickStart: () -> Unit) :
     RecyclerView.Adapter<BoardAdapter.ViewHolder>() {
 
+    private lateinit var navController: NavController
     private val titlesSwipe = arrayListOf<PagerModel>(
         PagerModel(
-            "Page 1",
+            "Салам",
             R.raw.news1,
             "Swipe left"
         ),
         PagerModel(
-            "Page 1",
+            "Привет",
             R.raw.news2,
             "Swipe left"
         ),
         PagerModel(
-            "Page 1",
+            "Hello",
             R.raw.news3,
-            "Swipe left"
+            "Tap to Start"
         )
     )
 
@@ -54,13 +56,12 @@ class BoardAdapter(private val onClickStart: () -> Unit) :
 
             binding.textTitle.text = pagerModel.title
             binding.textDesc.text = pagerModel.description
-            Glide.with(binding.imageView).load(pagerModel.image).into(binding.imageView)
-
+            binding.imageView.setAnimation(pagerModel.image)
             if (adapterPosition != titlesSwipe.size -1) {
                 binding.btnStart.visibility = View.INVISIBLE
             }
             binding.btnStart.setOnClickListener {
-                onClickStart
+                onClickStart()
             }
 
         }

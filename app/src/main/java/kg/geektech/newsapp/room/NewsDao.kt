@@ -1,9 +1,6 @@
 package kg.geektech.newsapp.room
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import kg.geektech.newsapp.models.News
 
 @Dao
@@ -15,9 +12,19 @@ interface NewsDao {
     @Insert
     fun insert(news: News)
 
-    @Query("SELECT * FROM news ORDER BY createdAt Desc")
-    fun sortAll() : List<News>
+    @Update
+    fun update (news: News)
 
     @Delete
     fun deleteItem(news: News)
+
+    @Query("SELECT * FROM news ORDER BY createdAt Desc")
+    fun sortAll() : List<News>
+
+    @Query("SELECT * FROM news WHERE title LIKE '%' || :search || '%'")
+    fun getSearch(search : String?) : List<News>
+
+    @Query("SELECT * FROM news ORDER BY title ASC")
+    fun sort(): List<News>
+
 }

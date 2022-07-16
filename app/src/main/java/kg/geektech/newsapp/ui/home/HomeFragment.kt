@@ -5,17 +5,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kg.geektech.newsapp.App
 import kg.geektech.newsapp.R
 import kg.geektech.newsapp.databinding.FragmentHomeBinding
 import kg.geektech.newsapp.models.News
-import java.text.FieldPosition
+import kg.geektech.newsapp.ui.news.NewsAdapter
 
 class HomeFragment : Fragment() {
 
@@ -34,7 +32,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
          binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding.root
+         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

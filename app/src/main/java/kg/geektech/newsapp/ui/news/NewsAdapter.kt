@@ -1,4 +1,4 @@
-package kg.geektech.newsapp.ui.home
+package kg.geektech.newsapp.ui.news
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -8,7 +8,6 @@ import kg.geektech.newsapp.databinding.ItemNewsBinding
 import kg.geektech.newsapp.models.News
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 class NewsAdapter(
     private val onClick : (position : Int) -> Unit,

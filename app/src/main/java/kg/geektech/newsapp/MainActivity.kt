@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.auth.FirebaseAuth
 import kg.geektech.newsapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -38,11 +39,14 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        if(FirebaseAuth.getInstance().currentUser == null){
+            navController.navigate(R.id.loginFragment)
+        }
+
         if (!Prefs(this).isShown()) {
             navController.navigate(R.id.boardFragment)
 
-            navController.addOnDestinationChangedListener { navController: NavController, navDestination : NavDestination,
-            bundle : Bundle? ->
+            navController.addOnDestinationChangedListener { navController: NavController, navDestination : NavDestination, bundle : Bundle? ->
                 val fragments = arrayListOf(
                     R.id.navigation_home,
                     R.id.navigation_dashboard,

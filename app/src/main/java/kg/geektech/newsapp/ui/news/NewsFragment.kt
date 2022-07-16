@@ -1,15 +1,12 @@
-package kg.geektech.newsapp.ui
+package kg.geektech.newsapp.ui.news
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.navigation.fragment.findNavController
 import kg.geektech.newsapp.App
-import kg.geektech.newsapp.R
-import kg.geektech.newsapp.databinding.FragmentHomeBinding
 import kg.geektech.newsapp.databinding.FragmentNewsBinding
 import kg.geektech.newsapp.models.News
 
@@ -22,8 +19,7 @@ class NewsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
+    ): View {
         binding = FragmentNewsBinding.inflate(inflater, container, false)
         return binding.root
     }
